@@ -1,0 +1,5 @@
+{{/* Project-level additions to <head>. Included by the theme's head.html. */}}
+{{ with resources.Get "css/custom.css" }}
+  {{ $css := . | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ end }}

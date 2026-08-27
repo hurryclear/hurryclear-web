@@ -17,6 +17,12 @@ defaultContentLanguage = 'en'
     title = 'Hur Jiang'
     logo = 'logo.svg'
 
+  # Homepage "about me" card (right column of the home page).
+  [params.about]
+    name = 'Hur Jiang'
+    avatar = 'logo.svg'  # placeholder; swap for e.g. 'images/avatar.jpg' in static/
+    bio = 'A sentence or two about who you are and what you care about.'
+
   [params.footer]
     since = 2026
     poweredby = false

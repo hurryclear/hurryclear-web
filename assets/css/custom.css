@@ -1,0 +1,8 @@
+/* Project-level styles layered on top of the theme's compiled CSS.
+   Keep this small: the Tailwind compiler does NOT run on deploy, so custom
+   utility classes won't work here — only hand-written CSS like the below. */
+
+.site-avatar {
+  width: 6rem;
+  height: 6rem;
+}
