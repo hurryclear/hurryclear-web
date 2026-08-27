@@ -17,9 +17,32 @@ defaultContentLanguage = 'en'
     title = 'Hur Jiang'
     logo = 'logo.svg'
 
+  # Homepage profile card (right column of the home page).
+  [params.profile]
+    name = 'Hur Jiang'
+    avatar = 'images/profile-avatar.png'  # file lives at assets/images/ ; resized at build time
+    # avatar framing is tuned via .profile-avatar { object-position } in assets/css/custom.css
+    bio = 'Data Engineer & Software Developer @Webis Group // Recent CS graduate passionate about data mining, software development, and NLP research'
+
   [params.footer]
     since = 2026
     poweredby = false
+
+  # Social links — shown in the footer and the homepage profile card.
+  # Available icons: brand-github, brand-linkedin, brand-x, brand-twitter,
+  # brand-bluesky, brand-instagram, brand-facebook, brand-youtube, brand-telegram
+  [params.social_media]
+    [[params.social_media.items]]
+      enabled = true
+      title = 'GitHub'
+      icon = 'brand-github'
+      link = 'https://github.com/hurryclear'
+
+    [[params.social_media.items]]
+      enabled = true
+      title = 'LinkedIn'
+      icon = 'brand-linkedin'
+      link = 'https://www.linkedin.com/in/huojiang/'
 
 [menus]
   [[menus.main]]

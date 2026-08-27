@@ -2,5 +2,7 @@
 title = 'Home'
 +++
 
-Placeholder homepage text. The two-column layout with your core-idea text and
-an "about me" card comes on the next branch.
+## I start the blog because I'm tired ...
+
+Write the core idea here — the thing you want a first-time visitor to take
+away. A few short paragraphs is plenty.
