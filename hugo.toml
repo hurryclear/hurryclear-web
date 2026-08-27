@@ -1,3 +1,33 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://hurryclear.com/'
+title = 'Hur Jiang'
+theme = 'tailwind'
 locale = 'en-us'
-title = 'My New Hugo Project'
+defaultContentLanguage = 'en'
+
+[params]
+  subtitle = 'personal site'
+  contentTypeName = 'posts'
+  showAuthor = true
+
+  [params.author]
+    name = 'Hur Jiang'
+    email = 'hurjiangde@gmail.com'
+
+  [params.header]
+    title = 'Hur Jiang'
+    logo = 'logo.svg'
+
+  [params.footer]
+    since = 2026
+    poweredby = false
+
+[menus]
+  [[menus.main]]
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 10
+
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 20
