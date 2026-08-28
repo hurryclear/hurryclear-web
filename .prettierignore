@@ -1,0 +1,5 @@
+# Hugo templates are Go html/template, not plain HTML. Prettier's HTML parser
+# breaks the {{- -}} whitespace markers and mis-nests tags around template
+# actions, so keep it away from anything Hugo renders as a template.
+layouts/
+archetypes/

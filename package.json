@@ -1,0 +1,10 @@
+{
+  "name": "hurryclear-web",
+  "private": true,
+  "description": "Tailwind CSS dependencies. Hugo compiles the CSS itself via css.TailwindCSS (see layouts/partials/head.html); there is no separate build step.",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.1.14"
+  }
+}

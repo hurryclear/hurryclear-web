@@ -1,0 +1,30 @@
+{{- /* Site footer — structure only. All styling lives in assets/css/main.css
+       under the .site-footer* classes. Left column: copyright. Right column:
+       footer menu (Privacy + Source), defined per language in hugo.yaml. */ -}}
+
+{{- $repo := "https://github.com/hurryclear/hurryclear-web" -}}
+{{- $src := $repo -}}
+{{- with .File -}}
+  {{- $src = printf "%s/blob/main/content/%s" $repo .Path -}}
+{{- end -}}
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+
+    <div>&copy; {{ now.Format "2006" }} {{ site.Title }}</div>
+
+    {{- with site.Menus.footer -}}
+      <nav class="site-footer__nav">
+        {{- range . -}}
+          {{- $url := .URL -}}
+          {{- $external := false -}}
+          {{- if eq .Identifier "source" -}}
+            {{- $url = $src -}}
+            {{- $external = true -}}
+          {{- end -}}
+          <a href="{{ $url }}" class="site-footer__link"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ .Name }}</a>
+        {{- end -}}
+      </nav>
+    {{- end -}}
+  </div>
+</footer>

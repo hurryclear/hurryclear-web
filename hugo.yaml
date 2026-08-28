@@ -1,0 +1,142 @@
+baseURL: 'https://hurryclear.com/'
+title: 'Hur Jiang'
+locale: 'en-us'
+
+defaultContentLanguage: 'en'
+defaultContentLanguageInSubdir: false
+hasCJKLanguage: true
+
+markup:
+  goldmark:
+    extensions:
+      cjk:
+        enable: true
+        eastAsianLineBreaks: true
+
+# --- Tailwind CSS, compiled by Hugo via css.TailwindCSS (see partials/head.html) ---
+
+# Allow Hugo to shell out to the Tailwind CLI. `allow` replaces the whole default
+# list, so the built-in entries are repeated.
+security:
+  exec:
+    allow:
+      - '^(dart-)?sass$'
+      - '^go$'
+      - '^git$'
+      - '^node$'
+      - '^npx$'
+      - '^postcss$'
+      - '^tailwindcss$'
+
+build:
+  # Write hugo_stats.json (the class/id/tag inventory of the rendered site).
+  buildStats:
+    enable: true
+  # When that inventory or the Tailwind config changes, drop the cached CSS so
+  # css.TailwindCSS re-runs. Without this, `hugo server` never recompiles the
+  # stylesheet after a template adds a new utility class.
+  cachebusters:
+    - source: 'assets/notwatching/hugo_stats\.json'
+      target: 'css'
+    - source: '(postcss|tailwind)\.config\.js'
+      target: 'css'
+
+module:
+  mounts:
+    - source: assets
+      target: assets
+    # Mount hugo_stats.json into assets/ so the cachebuster can watch it, but
+    # disableWatch so regenerating it doesn't itself trigger an endless rebuild.
+    - source: hugo_stats.json
+      target: assets/notwatching/hugo_stats.json
+      disableWatch: true
+
+languages:
+  en:
+    label: 'English'
+    weight: 1
+    menus:
+      main:
+        - name: 'Home'
+          pageRef: '/'
+          weight: 5
+        - name: 'Posts'
+          pageRef: '/posts'
+          weight: 10
+        - name: 'About'
+          pageRef: '/about'
+          weight: 20
+      footer:
+        - name: 'Privacy'
+          pageRef: '/privacy'
+          weight: 10
+        - name: 'Source'
+          identifier: 'source'
+          url: 'https://github.com/hurryclear/hurryclear-web'
+          weight: 20
+  zh-cn:
+    label: '中文'
+    weight: 2
+    menus:
+      main:
+        - name: '首页'
+          pageRef: '/'
+          weight: 5
+        - name: '文章'
+          pageRef: '/posts'
+          weight: 10
+        - name: '关于'
+          pageRef: '/about'
+          weight: 20
+      footer:
+        - name: '隐私'
+          pageRef: '/privacy'
+          weight: 10
+        - name: '源码'
+          identifier: 'source'
+          url: 'https://github.com/hurryclear/hurryclear-web'
+          weight: 20
+
+params:
+  subtitle: 'personal site'
+  contentTypeName: 'posts'
+  showAuthor: true
+  DateFormatList: 'Jan 2, 2006'
+
+  # Client-side search (Fuse.js). See layouts/search/ and assets/js/search.js.
+  search:
+    summaryInclude: 180
+    minMatchCharLength: 2
+    threshold: 0.3
+
+  author:
+    name: 'Hur Jiang'
+    email: 'hurjiangde@gmail.com'
+
+  header:
+    title: 'Hur Jiang'
+    logo: 'logo.svg'
+
+  # Homepage / About profile card (right column).
+  profile:
+    name: 'Hur Jiang'
+    avatar: 'images/profile-avatar.png'   # file lives at assets/images/ ; resized at build time
+    bio: 'Data Engineer & Software Developer @Webis Group // Recent CS graduate passionate about data mining, software development, and NLP research'
+
+  footer:
+    since: 2026
+    poweredby: false
+
+  # Social links — shown in the footer and the homepage profile card.
+  # Available icons: brand-github, brand-linkedin, brand-x, brand-twitter,
+  # brand-bluesky, brand-instagram, brand-facebook, brand-youtube, brand-telegram
+  social_media:
+    items:
+      - enabled: true
+        title: 'GitHub'
+        icon: 'brand-github'
+        link: 'https://github.com/hurryclear'
+      - enabled: true
+        title: 'LinkedIn'
+        icon: 'brand-linkedin'
+        link: 'https://www.linkedin.com/in/hurryclear/'

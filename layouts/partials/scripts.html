@@ -1,0 +1,7 @@
+{{- /* Bundled JS: dark-mode toggle + mobile menu. */ -}}
+{{- $opts := dict "minify" hugo.IsProduction -}}
+{{- with resources.Get "js/main.js" -}}
+  {{- $js := . | js.Build $opts -}}
+  {{- if hugo.IsProduction }}{{ $js = $js | fingerprint }}{{ end -}}
+  <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+{{- end -}}

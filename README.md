@@ -1,24 +1,31 @@
 # hurryclear.com
 
-Personal site and blog of Hur Jiang, built with [Hugo](https://gohugo.io/)
-and the [tailwind theme](https://github.com/tomowang/hugo-theme-tailwind)
-(vendored as a git submodule).
+Personal site and blog of Hur Jiang, built with [Hugo](https://gohugo.io/).
+The layout is hand-written (no theme); styling is [Tailwind CSS](https://tailwindcss.com/) v4.
 
 ## Local development
 
 ```sh
-# first clone — pull the theme submodule too
-git clone --recurse-submodules https://github.com/hurryclear/hurryclear.com.git
+git clone https://github.com/hurryclear/hurryclear-web.git
+cd hurryclear-web
 
-# if you already cloned without submodules
-git submodule update --init --recursive
-
-# run the dev server at http://localhost:1313
-hugo server
+npm install          # Tailwind CLI + typography plugin
+hugo server          # dev server at http://localhost:1313
 ```
 
-Requires Hugo **extended** (image processing is used for the profile
-avatar). This project is built against Hugo `0.165.0`.
+Requires Hugo **extended** `0.165.0` (image processing is used for the profile
+avatar) and Node (Hugo shells out to the Tailwind CLI).
+
+### CSS workflow
+
+`assets/css/main.css` is the Tailwind **source**. Hugo compiles it itself via
+`css.TailwindCSS` (see `layouts/partials/head.html`) — there is **no separate
+build step and nothing to commit**. `hugo server` recompiles the stylesheet
+whenever a template adds a new utility class, using `build.buildStats` +
+`build.cachebusters` in `hugo.yaml` to invalidate the cached CSS.
+
+`assets/css/app.css` no longer exists; it is git-ignored so a stray manual build
+can't be committed.
 
 ### Content
 
@@ -27,9 +34,46 @@ Each page or post is a [page bundle](https://gohugo.io/content-management/page-b
 
 ```
 content/
-  _index.md              # homepage
-  about/index.md
+  _index.md              # homepage (left column article)
+  about/index.md         # About — doubles as the résumé
   posts/<slug>/index.md
+  search/_index.md        # search page (layout: search, outputs: html + json)
+```
+
+### Languages
+
+English (`en`, served at `/`) and Chinese (`zh-cn`, served at `/zh-cn/`).
+Config: `languages:` in `hugo.yaml`; UI strings in `i18n/en.yaml` / `i18n/zh-cn.yaml`.
+Translate a page by adding a `.zh-cn.md` sibling (e.g. `about/index.zh-cn.md`);
+untranslated pages simply don't appear in that language. A language switcher is
+in the header when more than one language exists.
+
+### Search
+
+Client-side, [Fuse.js](https://fusejs.io/) + [mark.js](https://markjs.io/)
+(loaded from jsDelivr CDN). `layouts/search/search.json` emits `/search/index.json`
+listing every page across both languages; `layouts/search/search.html` +
+`assets/js/search.js` do the querying. Tune in `params.search` (`hugo.yaml`).
+
+### Layout structure
+
+```
+layouts/
+  _default/baseof.html   # the shell: <head>, header, footer, two-column grid
+  _default/single.html   # About and other plain pages (left column)
+  _default/list.html     # /posts/ and taxonomy term pages (left column)
+  posts/single.html      # an individual post (left column)
+  index.html             # homepage (left column)
+  404.html
+  partials/
+    head.html header.html footer.html menu.html
+    social_media.html icon.html scripts.html
+    profile-card.html    # right column: home + About
+    categories.html      # right column: posts / categories / tags
+assets/
+  css/main.css                # Tailwind source (compiled by Hugo via css.TailwindCSS)
+  js/main.js                  # dark-mode toggle + mobile menu
+  icons/*.svg                 # inlined by partials/icon.html
 ```
 
 ## Deployment
@@ -45,20 +89,19 @@ GitHub integration. Every pull request also gets a preview deployment.
 | Build command | `hugo --gc --minify` |
 | Build output directory | `public` |
 | Environment variable | `HUGO_VERSION` = `0.165.0` |
+| Environment variable | `NODE_VERSION` = `20` |
 
 Notes:
 
 - `HUGO_VERSION` is required — without it Cloudflare uses an old default Hugo and the build fails.
-- The theme submodule uses an **HTTPS** URL, so Cloudflare clones it automatically. No extra configuration needed.
-- No Node/npm build step: the theme ships pre-compiled CSS; Hugo Pipes only fingerprints and minifies it.
+- Cloudflare auto-detects `package.json` and runs `npm install` before the build
+  command; Hugo then calls the Tailwind CLI during `hugo --gc --minify`. If
+  `npm install` fails, the deploy fails. `NODE_VERSION` pins a modern Node.
 
-### Custom domain (pending)
+### Custom domain
 
-The site currently serves from the project's `*.pages.dev` URL. `baseURL`
-in `hugo.toml` is already set to `https://hurryclear.com/`, so absolute
-URLs (canonical tags, sitemap, RSS) point there ahead of the domain going
-live. Once `hurryclear.com` is registered: add it under **Custom domains**
-in the Pages project — no code change needed.
+`baseURL` in `hugo.yaml` is set to `https://hurryclear.com/`. Add the domain
+under **Custom domains** in the Pages project — no code change needed.
 
 ### Optional: correct baseURL on preview deployments
 
