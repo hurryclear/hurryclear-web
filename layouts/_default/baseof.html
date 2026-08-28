@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='{{ or site.Language.Lang | default "en" }}' dir='{{ or site.Language.Direction "ltr" }}'>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} :: {{ site.Title }}{{ end }}</title>
+
+  {{- /* Set .dark before first paint to avoid a light-mode flash. */ -}}
+  <script>
+    (function () {
+      try {
+        if (localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) && matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  {{ partial "head.html" . }}
+  {{ block "head" . }}{{ end }}
+</head>
+
+<body class="min-h-screen flex flex-col bg-slate-50 dark:bg-gray-900 text-slate-800 dark:text-slate-200">
+
+  <header class="sticky top-0 z-40 border-b border-slate-200/80 dark:border-gray-800 bg-slate-50/85 dark:bg-gray-900/85 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+      {{ partial "header.html" . }}
+    </div>
+  </header>
+
+  <main class="flex-auto w-full mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    {{- if or (eq .Kind "404") (eq .Section "search") -}}
+      {{ block "main" . }}{{ end }}
+    {{- else -}}
+      <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-16">
+        <div class="min-w-0">
+          {{ block "main" . }}{{ end }}
+        </div>
+        <aside class="hidden lg:block">
+          <div class="sticky top-24">
+            {{- if or (eq .Section "posts") (eq .Kind "term") (eq .Kind "taxonomy") -}}
+              {{ partial "categories.html" . }}
+            {{- else -}}
+              {{ partial "profile-card.html" . }}
+            {{- end -}}
+          </div>
+        </aside>
+      </div>
+    {{- end -}}
+  </main>
+
+  {{ block "footer" . }}{{ partial "footer.html" }}{{ end }}
+
+  {{ partial "scripts.html" . }}
+
+</body>
+</html>

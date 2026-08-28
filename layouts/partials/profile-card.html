@@ -1,31 +1,24 @@
-{{/* Homepage profile card (right column). Content comes from [params.profile] in hugo.toml. */}}
-{{ $profile := .Site.Params.profile }}
+{{- /* Right-rail identity block (marginalia — no card). From params.profile. */ -}}
+{{ $profile := site.Params.profile }}
 {{ $name := or $profile.name site.Params.author.name }}
-<section class="flex flex-col gap-y-3 mt-6 p-6 rounded-lg shadow-md bg-white dark:bg-gray-700 text-slate-800 dark:text-slate-200">
+<section class="flex flex-col gap-y-3 text-sm">
   {{ with $profile.avatar }}
     {{ $img := resources.Get . }}
-    {{ if $img }}
-      {{/* Downscale only, keep the full frame. Square + circle + framing
-           are done in CSS (.profile-avatar in assets/css/custom.css) so the
-           crop can be tuned live via object-position. */}}
-      {{ $img = $img.Resize "384x webp q85" }}
-      <img class="profile-avatar rounded-full bg-gray-100" src="{{ $img.RelPermalink }}" width="96" height="96" alt="{{ $name }}">
-    {{ else }}
-      <img class="profile-avatar rounded-full bg-gray-100" src="{{ . | relURL }}" width="96" height="96" alt="{{ $name }}">
-    {{ end }}
+    {{ if $img }}{{ $img = $img.Resize "256x webp q85" }}{{ end }}
+    <img class="profile-avatar rounded-full bg-slate-100 dark:bg-gray-800"
+      src="{{ if $img }}{{ $img.RelPermalink }}{{ else }}{{ . | relURL }}{{ end }}"
+      width="64" height="64" alt="{{ $name }}">
   {{ end }}
 
-  <h2 class="text-2xl font-semibold">{{ $name }}</h2>
+  <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ $name }}</h2>
 
   {{ with $profile.bio }}
-    <div class="text-slate-600 dark:text-slate-300">
-      {{ . | markdownify }}
-    </div>
+    <div class="text-slate-500 dark:text-slate-400 leading-relaxed">{{ . | markdownify }}</div>
   {{ end }}
 
-  <div class="flex flex-row flex-wrap">
+  <div class="flex flex-row flex-wrap text-slate-500 dark:text-slate-400">
     {{ partial "social_media.html" . }}
   </div>
 
-  <a class="text-sm font-medium hover:text-emerald-600" href="{{ "about/" | relLangURL }}">More about me &rarr;</a>
+  <a class="font-medium hover:text-emerald-600" href="{{ "about/" | relLangURL }}">More about me &rarr;</a>
 </section>

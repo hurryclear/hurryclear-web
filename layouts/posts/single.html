@@ -1,0 +1,29 @@
+{{- /* Left column for an individual post: title, date, taxonomies, body.
+       Shell + categories column come from baseof.html. */ -}}
+{{ define "main" }}
+  <article>
+    <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{{ .Title }}</h1>
+    {{ with .Description }}
+      <p class="mt-2 text-slate-500 dark:text-slate-400">{{ . }}</p>
+    {{ end }}
+
+    <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
+      {{ with .Date }}
+        <span class="inline-flex items-center gap-x-1">
+          <i class="h-4 w-4">{{ partial "icon.html" "calendar" }}</i>
+          <time datetime="{{ .Format "2006-01-02" }}">{{ .Format (site.Params.DateFormatList | default "Jan 2, 2006") }}</time>
+        </span>
+      {{ end }}
+      {{ $terms := slice }}
+      {{ range .GetTerms "categories" }}{{ $terms = $terms | append . }}{{ end }}
+      {{ range .GetTerms "tags" }}{{ $terms = $terms | append . }}{{ end }}
+      {{ range $terms }}
+        <a href="{{ .RelPermalink }}" class="hover:text-emerald-600">#{{ .LinkTitle }}</a>
+      {{ end }}
+    </div>
+
+    <div class="mt-8 prose prose-slate dark:prose-invert prose-quoteless max-w-none">
+      {{ .Content }}
+    </div>
+  </article>
+{{ end }}

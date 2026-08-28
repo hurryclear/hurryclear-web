@@ -1,0 +1,14 @@
+{{- /* Left column for plain pages (About). About doubles as the resume:
+       the body carries ## Experience / ## Project / ## Education headings.
+       No date, no author. Shell + profile card come from baseof.html. */ -}}
+{{ define "main" }}
+  <article>
+    <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{{ .Title }}</h1>
+    {{ with .Description }}
+      <p class="mt-2 text-slate-500 dark:text-slate-400">{{ . }}</p>
+    {{ end }}
+    <div class="mt-8 prose prose-slate dark:prose-invert prose-quoteless max-w-none">
+      {{ .Content }}
+    </div>
+  </article>
+{{ end }}

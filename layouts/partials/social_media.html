@@ -1,0 +1,8 @@
+{{- /* Social links from params.social_media.items. Shown in the footer and
+       the profile card. Each item: enabled, title, icon (assets/icons name), link. */ -}}
+{{- range where site.Params.social_media.items "enabled" true -}}
+  <a href="{{ .link | safeURL }}" target="_blank" rel="noopener" title="{{ .title }}" class="mr-3 hover:text-emerald-600">
+    <span class="sr-only">{{ .title }}</span>
+    <i class="inline-block h-6 w-6">{{ partial "icon.html" .icon }}</i>
+  </a>
+{{- end -}}

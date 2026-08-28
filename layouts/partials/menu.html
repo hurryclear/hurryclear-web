@@ -1,0 +1,32 @@
+{{- /* Main nav. Desktop: inline pills. Mobile: hamburger toggles #menu
+       (wired in assets/js/main.js). Active item = current page only. */ -}}
+{{ $page := . }}
+{{ with site.Menus.main }}
+<nav class="relative">
+  <button id="menu-toggle" type="button" aria-label="{{ T "open_main_menu" }}"
+    class="inline-flex items-center p-2 rounded-lg text-slate-800 dark:text-slate-200 md:hidden">
+    <i class="block h-6 w-6">{{ partial "icon.html" "menu-2" }}</i>
+  </button>
+
+  {{- /* Mobile: a floating panel with its own surface + border.
+         Desktop (md+): a plain inline row, no background/border/shadow. */ -}}
+  <div id="menu" class="hidden absolute right-0 top-12 z-50 md:static md:block md:top-0">
+    <ul class="flex flex-col md:flex-row items-stretch md:items-center gap-y-1 md:gap-y-0
+               py-2 md:py-0 px-2 md:px-0 text-sm font-medium
+               rounded-lg md:rounded-none
+               bg-slate-50 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent
+               border border-slate-200 md:border-0 dark:border-gray-700
+               shadow-lg md:shadow-none">
+      {{ range . }}
+        {{ $isCurrent := or ($page.IsMenuCurrent .Menu .) ($page.HasMenuCurrent .Menu .) }}
+        <li>
+          <a href="{{ .URL }}" title="{{ .Name }}"
+            class="block px-3 py-2 hover:text-emerald-600{{ if $isCurrent }} text-emerald-600{{ end }}">
+            {{ .Name }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+</nav>
+{{ end }}

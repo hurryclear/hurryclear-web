@@ -1,0 +1,43 @@
+{{- /* Header contents (baseof.html supplies the sticky bar + max-w-6xl container).
+       name -> home, main menu, search, language switcher, dark-mode toggle. */ -}}
+<a href="{{ "" | relLangURL }}" class="text-lg font-semibold tracking-tight hover:text-emerald-600">
+  {{ site.Params.header.title | default site.Title }}
+</a>
+
+<div class="flex items-center gap-x-1">
+  {{ partial "menu.html" . }}
+
+  <a href="{{ "search/" | relLangURL }}" title="{{ T "search.title" }}"
+    class="inline-flex items-center p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-600">
+    <span class="sr-only">{{ T "search.title" }}</span>
+    <i class="block h-5 w-5">{{ partial "icon.html" "search" }}</i>
+  </a>
+
+  {{- if gt (len site.Home.AllTranslations) 1 }}
+  {{ $page := . }}
+  <div class="relative">
+    <button id="lang-toggle" type="button" aria-label="{{ T "open_lang_switcher" }}"
+      class="inline-flex items-center p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-600">
+      <i class="block h-5 w-5">{{ partial "icon.html" "language" }}</i>
+    </button>
+    <ul id="lang-menu" class="hidden absolute right-0 top-11 z-50 min-w-28 rounded-md py-1
+               bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 shadow-sm">
+      {{ range .AllTranslations }}
+        <li>
+          {{ if eq .Language.Lang $page.Language.Lang }}
+            <span class="block px-4 py-2 text-emerald-600">{{ .Language.Label }}</span>
+          {{ else }}
+            <a href="{{ .RelPermalink }}" class="block px-4 py-2 hover:text-emerald-600">{{ .Language.Label }}</a>
+          {{ end }}
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+  {{- end }}
+
+  <button id="theme-toggle" type="button" aria-label="{{ T "header.darkmode_toggle" }}"
+    class="inline-flex items-center p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-600">
+    <i class="block h-5 w-5 dark:hidden">{{ partial "icon.html" "brightness-down" }}</i>
+    <i class="hidden h-5 w-5 dark:block">{{ partial "icon.html" "moon-stars" }}</i>
+  </button>
+</div>

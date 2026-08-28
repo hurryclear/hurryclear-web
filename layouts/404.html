@@ -1,0 +1,10 @@
+{{ define "main" }}
+  <div class="py-16 text-center">
+    <p class="text-sm font-semibold text-emerald-600">404</p>
+    <h1 class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{{ T "404.page_not_found" }}</h1>
+    <p class="mt-4 text-slate-500 dark:text-slate-400">{{ T "404.sorry" }}</p>
+    <a href="{{ "" | relLangURL }}" class="inline-block mt-8 text-sm font-medium text-emerald-600 hover:text-emerald-500">
+      {{ T "404.go_back_home" }} &rarr;
+    </a>
+  </div>
+{{ end }}

@@ -1,0 +1,45 @@
+{{ define "head" }}
+  {{- with .OutputFormats.Get "json" -}}
+    <link rel="preload" href="{{ .RelPermalink }}" as="fetch" crossorigin="anonymous">
+  {{- end -}}
+{{ end }}
+
+{{ define "main" }}
+<div class="max-w-2xl">
+  <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{{ T "search.title" }}</h1>
+  <form class="mt-6 flex items-center border-b border-slate-300 dark:border-gray-700 focus-within:border-emerald-500" action="./" method="get">
+    <i class="h-5 w-5 flex-none text-slate-400">{{ partial "icon.html" "search" }}</i>
+    <input type="text" name="search" id="search-input" required
+      placeholder="{{ T "search.placeholder" }}"
+      class="flex-1 min-w-0 bg-transparent px-3 py-2 text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none">
+  </form>
+
+  <section class="mt-8 flex flex-col divide-y divide-slate-200 dark:divide-gray-800" id="search-result"></section>
+  <p id="search-result-empty" class="hidden mt-8 text-slate-500 dark:text-slate-400">
+    {{ T "search.empty_result" }}
+  </p>
+</div>
+
+<div class="hidden" id="tag-icon">
+  <i class="h-5 w-5 flex-none">{{ partial "icon.html" "hash" }}</i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js" defer></script>
+
+{{- $dot := resources.Get "js/doT.js" -}}
+{{- if hugo.IsProduction }}{{ $dot = $dot | minify }}{{ end -}}
+<script src="{{ $dot.RelPermalink }}" defer></script>
+
+<script>
+  var searchOptions = {
+    summaryInclude: {{ site.Params.search.summaryInclude | default 180 }},
+    minMatchCharLength: {{ site.Params.search.minMatchCharLength | default 2 }},
+    threshold: {{ site.Params.search.threshold | default 0.3 }},
+  };
+</script>
+
+{{- $search := resources.Get "js/search.js" | js.Build (dict "minify" hugo.IsProduction) -}}
+{{- if hugo.IsProduction }}{{ $search = $search | fingerprint }}{{ end -}}
+<script src="{{ $search.RelPermalink }}" defer></script>
+{{ end }}

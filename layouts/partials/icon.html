@@ -1,0 +1,6 @@
+{{- /* Inline an SVG from assets/icons/<name>.svg. Call: {{ partial "icon.html" "menu-2" }} */ -}}
+{{- with resources.GetMatch (printf "icons/%s.svg" .) -}}
+  {{- .Content | safeHTML -}}
+{{- else -}}
+  {{- warnf "icon.html: assets/icons/%s.svg not found" . -}}
+{{- end -}}

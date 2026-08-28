@@ -1,0 +1,24 @@
+open_main_menu: "打开菜单"
+open_lang_switcher: "打开语言切换"
+table_of_contents: "目录"
+
+reading_time:
+  one: "阅读时长 {{ .Count }} 分钟"
+  other: "阅读时长 {{ .Count }} 分钟"
+
+search:
+  title: "搜索"
+  placeholder: "搜索…"
+  empty_result: "无结果。"
+
+header:
+  darkmode_toggle: "切换夜间模式"
+
+"404":
+  page_not_found: "页面未找到"
+  sorry: "对不起，暂未找到您请求的页面。"
+  go_back_home: "回到首页"
+
+taxonomies:
+  categories: "分类"
+  tags: "标签"
